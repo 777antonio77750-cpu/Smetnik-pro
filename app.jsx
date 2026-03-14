@@ -1,6 +1,6 @@
 const tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();}
 
-import { useState, useCallback, useEffect, useRef } from "react";
+const { useState, useCallback, useEffect, useRef } = React;
 
 const ROOMS = [
   { id: "living", label: "Гостиная", icon: "🛋" },
@@ -83,7 +83,7 @@ async function loadState() {
   } catch { return null; }
 }
 
-export default function RepairBot() {
+function RepairBot() {
   const [activeTab, setActiveTab] = useState("calculator");
   const [rooms, setRooms] = useState([]);
   const [quality, setQuality] = useState(1);
@@ -409,3 +409,4 @@ export default function RepairBot() {
     </div>
   );
 }
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RepairBot));
