@@ -1,1 +1,1 @@
-# Smetnik-pro
+# Smetchik-pro
