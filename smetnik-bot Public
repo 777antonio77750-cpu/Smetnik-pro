@@ -1,1 +1,56 @@
+import telebot, os
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, ReplyKeyboardMarkup, KeyboardButton
 
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+WEBAPP_URL = os.environ.get("WEBAPP_URL")
+bot = telebot.TeleBot(BOT_TOKEN)
+
+@bot.message_handler(commands=["start"])
+def start(message):
+    reply_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+    reply_kb.add(KeyboardButton(
+        "📐 Открыть Сметчик PRO",
+        web_app=WebAppInfo(url=WEBAPP_URL)
+    ))
+    inline_kb = InlineKeyboardMarkup()
+    inline_kb.add(InlineKeyboardButton(
+        "🚀 Запустить приложение",
+        web_app=WebAppInfo(url=WEBAPP_URL)
+    ))
+    bot.send_message(
+        message.chat.id,
+        "👷 *Сметчик PRO*\n\n"
+        "Расчёт стоимости ремонта за 2 минуты:\n"
+        "• Предварительная смета\n"
+        "• Контроль поставок материалов\n"
+        "• ИИ-консультант прораба\n"
+        "• Экспорт в PDF",
+        parse_mode="Markdown",
+        reply_markup=reply_kb
+    )
+    bot.send_message(
+        message.chat.id,
+        "Нажмите кнопку 👇",
+        reply_markup=inline_kb
+    )
+
+@bot.message_handler(commands=["smeta"])
+def smeta(message):
+    kb = InlineKeyboardMarkup()
+    kb.add(InlineKeyboardButton(
+        "📐 Открыть Сметчик",
+        web_app=WebAppInfo(url=WEBAPP_URL)
+    ))
+    bot.send_message(message.chat.id, "👇", reply_markup=kb)
+
+@bot.message_handler(commands=["help"])
+def help_cmd(message):
+    bot.send_message(
+        message.chat.id,
+        "/start — главное меню\n"
+        "/smeta — открыть сметчик\n"
+        "/help — помощь"
+    )
+
+print("✅ Бот запущен!")
+bot.infinity_polling()
